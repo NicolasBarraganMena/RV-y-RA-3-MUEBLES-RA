@@ -5,8 +5,9 @@ using UnityEngine.XR.ARFoundation;
 
 public class InputManager : MonoBehaviour
 {
-    //[SerializeField] private GameObject arObject;
-    [SerializeField] private Camera arCamera;
+    [Header("AR Objects")]
+    [SerializeField] private GameObject arObj;
+    [SerializeField] private Camera arCam;
     [SerializeField] private ARRaycastManager raycastManager;
 
     private List<ARRaycastHit> hits = new List<ARRaycastHit>();
@@ -20,16 +21,14 @@ public class InputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (Input.GetMouseButtonDown(0)) //Si se da click izquierdo del mouse
+        if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = arCamera.ScreenPointToRay(Input.mousePosition);
-            if (raycastManager.Raycast(ray, hits))
+            Ray ray = arCam.ScreenPointToRay(Input.mousePosition);
+            if(raycastManager.Raycast(ray, hits))
             {
                 Pose pose = hits[0].pose;
-                Instantiate(DataHandler.Instance.furniture, pose.position, pose.rotation);
+                Instantiate(arObj, pose.position, pose.rotation);
             }
         }
-
     }
 }
